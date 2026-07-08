@@ -23,18 +23,21 @@ public class ClimaService {
     this.climaRepository = climaRepository;
   }
 
-  @Scheduled(cron = "0 */5 * * * *")
+  @Scheduled(fixedDelay = 300000) // 5 * 60 * 1000
   public void consultarClima(){
-    log.info("Consultando el clima");
     WeatherResponseDto response =  this.weatherApiClient.consultar();
 
     Clima clima = Clima.builder()
         .lastUpdateEpoch(response.getLastUpdateEpoch())
         .humedad(response.getHumedad())
         .temperatura(response.getTemperatura())
-        .fechaHora(LocalDateTime.parse(response.getFechaHora(), DateTimeFormatter.ISO_DATE_TIME))
+        .fechaHora(LocalDateTime.parse(response.getFechaHora(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
         .build();
     this.climaRepository.agregarRegistro(clima);
 
+    log.info("fecha = {} : temperatura= {} C, humedad= {}%"
+        ,clima.getFechaHora()
+        ,clima.getTemperatura()
+        ,clima.getHumedad());
   }
 }

@@ -39,9 +39,6 @@ public class WeatherApiClient {
         json.get("current").get("temp_c").asDouble(),
         json.get("current").get("humidity").asInt()
     );
-
-    log.info("temperatura= {} C, humedad= {}%", response.getTemperatura(), response.getHumedad());
-
     return response;
   }
 }

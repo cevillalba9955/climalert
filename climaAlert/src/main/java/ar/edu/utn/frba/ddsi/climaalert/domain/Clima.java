@@ -11,4 +11,5 @@ public class Clima {
   private LocalDateTime fechaHora;
   private double temperatura;
   private double humedad;
+
 }

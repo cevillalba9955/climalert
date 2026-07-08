@@ -28,6 +28,9 @@ class AlertaServiceTest {
   @Mock
   private EmailService emailService;
 
+  @Mock
+  private MensajeFactory mensajeFactory;
+
   private AlertaService alertaService;
 
   private static Clima clima(long epoch, double temperatura, double humedad) {
@@ -56,7 +59,7 @@ class AlertaServiceTest {
 
   @BeforeEach
   void setUp() {
-    alertaService = spy(new AlertaService(climaRepository, emailService));
+    alertaService = spy(new AlertaService(climaRepository, emailService, mensajeFactory));
   }
 
   @Test

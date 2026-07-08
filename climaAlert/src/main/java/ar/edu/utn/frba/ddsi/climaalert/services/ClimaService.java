@@ -29,9 +29,22 @@ public class ClimaService {
 
     Clima clima = Clima.builder()
         .lastUpdateEpoch(response.getLastUpdateEpoch())
-        .humedad(response.getHumedad())
-        .temperatura(response.getTemperatura())
         .fechaHora(LocalDateTime.parse(response.getFechaHora(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+        .temperatura(response.getTemperatura())
+        .humedad(response.getHumedad())
+        .condicion(response.getCondicion())
+        .velocidadViento(response.getVelocidadViento())
+        .direccionViento(response.getDireccionViento())
+        .precipitacion(response.getPrecipitacion())
+        .nubosidad(response.getNubosidad())
+        .sensacionTermica(response.getSensacionTermica())
+        .puntoRocio(response.getPuntoRocio())
+        .visibilidad(response.getVisibilidad())
+        .radiacionUV(response.getRadiacionUV())
+        .lluvia(response.getLluvia())
+        .probabilidadLluvia(response.getProbabilidadLluvia())
+        .nieve(response.getNieve())
+        .probabilidadNieve(response.getProbabilidadNieve())
         .build();
     this.climaRepository.agregarRegistro(clima);
 

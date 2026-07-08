@@ -4,7 +4,6 @@ import ar.edu.utn.frba.ddsi.climaalert.domain.Clima;
 import ar.edu.utn.frba.ddsi.climaalert.domain.CondicionHumedadAlta;
 import ar.edu.utn.frba.ddsi.climaalert.domain.CondicionTemperaturaAlta;
 import ar.edu.utn.frba.ddsi.climaalert.domain.ICondicion;
-import ar.edu.utn.frba.ddsi.climaalert.domain.Mail;
 import ar.edu.utn.frba.ddsi.climaalert.repositories.ClimaRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,14 +16,16 @@ import java.util.List;
 public class AlertaService {
   private final ClimaRepository climaRepository;
   private final EmailService emailService;
+  private final MensajeFactory mensajeFactory;
   private Clima climaActual;
   private final List<ICondicion> condiciones;
   private boolean estadoAlerta = false;
 
 
-  public AlertaService(ClimaRepository climaRepository, EmailService emailService) {
+  public AlertaService(ClimaRepository climaRepository, EmailService emailService, MensajeFactory mensajeFactory) {
     this.climaRepository = climaRepository;
     this.emailService = emailService;
+    this.mensajeFactory = mensajeFactory;
     this.condiciones = new ArrayList<>();
     this.condiciones.add(new CondicionTemperaturaAlta(35));
     this.condiciones.add(new CondicionHumedadAlta(60));
@@ -62,11 +63,12 @@ public class AlertaService {
     String asunto = estadoAlerta
         ? "Alerta: condiciones climáticas fuera de rango"
         : "Alerta finalizada: condiciones climáticas normalizadas";
-    String mensaje = String.format(
-        "Fecha: %s%nTemperatura: %.1f°C%nHumedad: %.1f%%",
-        climaActual.getFechaHora(), climaActual.getTemperatura(), climaActual.getHumedad());
+    String mensaje = mensajeFactory.generarHtml(climaActual);
 
 
     emailService.enviar(asunto,mensaje);
+    log.info(asunto);
+    log.info(mensajeFactory.generarTexto(climaActual));
+
   }
 }

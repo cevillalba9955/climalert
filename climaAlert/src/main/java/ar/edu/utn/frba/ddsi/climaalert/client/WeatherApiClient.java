@@ -33,11 +33,26 @@ public class WeatherApiClient {
 
     //TODO: verificar json valido sino lanzar excepción
 
+    JsonNode current = json.get("current");
+
     WeatherResponseDto response = new WeatherResponseDto(
-        json.get("current").get("last_updated_epoch").asLong(),
-        json.get("current").get("last_updated").asString(),
-        json.get("current").get("temp_c").asDouble(),
-        json.get("current").get("humidity").asInt()
+        current.get("last_updated_epoch").asLong(),
+        current.get("last_updated").asString(),
+        current.get("temp_c").asDouble(),
+        current.get("humidity").asDouble(),
+        current.get("condition").get("text").asString(),
+        current.get("wind_kph").asDouble(),
+        current.get("wind_degree").asDouble(),
+        current.get("precip_mm").asDouble(),
+        current.get("cloud").asDouble(),
+        current.get("feelslike_c").asDouble(),
+        current.get("dewpoint_c").asDouble(),
+        current.get("vis_km").asDouble(),
+        current.get("uv").asDouble(),
+        current.get("will_it_rain").asDouble(),
+        current.get("chance_of_rain").asDouble(),
+        current.get("will_it_snow").asDouble(),
+        current.get("chance_of_snow").asDouble()
     );
     return response;
   }

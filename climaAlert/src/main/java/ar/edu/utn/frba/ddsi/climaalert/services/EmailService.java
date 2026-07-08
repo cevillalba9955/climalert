@@ -42,7 +42,7 @@ public class EmailService {
 
   private void send(Mail mail) {
     // implementar
-    log.info(mail.toString());
+    log.info("Mail enviado... {} ", mail.getDestino());
   }
   
   @Scheduled(cron = "* */5 * * * *")
